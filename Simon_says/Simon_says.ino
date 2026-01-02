@@ -79,7 +79,7 @@ for(int i=-1;i<posicion;i++){
   }
    if(digitalRead(10)==HIGH){
      digitalWrite(5,HIGH);
-     delay(150);
+     delay(250);
      digitalWrite(5,LOW);
      if (pulsados[i+1]!=3){
       	tone(6,130.81,1500);
