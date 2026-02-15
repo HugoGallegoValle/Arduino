@@ -37,7 +37,6 @@ void loop() {
   temperatura=dht.readTemperature();
   humedad=dht.readHumidity();
   luminosidad=map(analogRead(A1),0,400,0,100);
-  Serial.println(luminosidad);
   pantalla.setCursor(1,10);
   pantalla.setTextSize(1);
   pantalla.setTextColor(WHITE);
@@ -54,6 +53,10 @@ void loop() {
   pantalla.print("Luminosidad:");
   pantalla.print(luminosidad);
   pantalla.print("%");
+  pantalla.setCursor(1,40);
+  pantalla.print("Humedad de la tierra:");
+  pantalla.setCursor(50,50);
+  pantalla.print(humedad_tierra);
   pantalla.display();
   delay(1000);
 }
