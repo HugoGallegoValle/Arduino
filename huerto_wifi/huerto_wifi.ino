@@ -6,13 +6,13 @@
 #include <WiFi.h>
 #include <WebServer.h>
 Adafruit_SSD1306 display(128,64,&Wire,-1);
-const char* ssid = "DIGIFIBRA-2133";
+const char* ssid = "DIGIFIBRA-2133_EXT";
 const char* password = "A7TJXB3Q4A";
 WebServer server(80);
 int temperatura;
 int humedad;
 bool boton;
-int ea=1;
+bool ea=true;
 int luminsoidad;
 int tierrahum;
 void paginaPrincipal(){
@@ -25,12 +25,29 @@ void paginaPrincipal(){
 
   pagina += "<body>";
   pagina += "<h1>Valores actuales</h1>";
-  pagina += "<p>Temperatura:"+String(temperatura)+"ºC</p>";
+  pagina += "<p>Temperatura:"+String(temperatura)+"*C</p>";
   pagina += "<p>Humedad:" +String(humedad)+"%</p>";
   pagina += "<p>Luminosidad:"+String(luminsoidad)+"%</p>";
   pagina += "<p>Humedad de la tierra:"+String(tierrahum)+"%</p>";
-  pagina += "</body></html>";
+  pagina +="<h1>Control del rele</h1>";
+  if(ea){
+     pagina +="<a href='/on'><button>ENCENDER<button></a>";
+  }
+  else{
+    pagina +="<a href='/off'><button>APAGAR<button></a>";
+  }
+  pagina +="</body></html>";
   server.send(200,"text/html",pagina);
+}
+void encenderRele(){
+    digitalWrite(23,HIGH);
+    ea=false;
+    paginaPrincipal();
+}
+void apagarRele(){
+  digitalWrite(23,LOW);
+  ea=true;
+  paginaPrincipal();
 }
 DHT termometro(13,11);
 void setup() {
@@ -55,24 +72,25 @@ void setup() {
   }
 termometro.begin();
 server.on("/",paginaPrincipal);
+server.on("/on",encenderRele);
+server.on("/off",apagarRele);
 server.begin();
 }
 void loop() {
   // put your main code here, to run repeatedly:
 temperatura=termometro.readTemperature();
 humedad=termometro.readHumidity();
-luminsoidad=map(0,4095,0,100,analogRead(34));
+luminsoidad=map(analogRead(34),0,4095,0,100);
 boton=digitalRead(5);
-tierrahum=map(1500,3000,0,100,analogRead(33));
+tierrahum=map(analogRead(33),3500,1400,0,100); //1400-3500
 if(boton){
-  if(ea==1){
-    digitalWrite(23,HIGH);
-    ea=0;
+  if(ea){
+  encenderRele();
   }
   else{
-    digitalWrite(23,LOW);
-    ea=1;
-    }
+    apagarRele();
+  }
 }
 server.handleClient();
+delay(1000);
 }
