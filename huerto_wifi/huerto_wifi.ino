@@ -1,11 +1,11 @@
+#include <Adafruit_SSD1306.h>
+#include <splash.h>
 #include <DHT.h>
 #include <DHT_U.h>
 #include <Wire.h>
-#include <Adafruit_SSD1306.h>
-#include <splash.h>
 #include <WiFi.h>
 #include <WebServer.h>
-Adafruit_SSD1306 display(128,64,&Wire,-1);
+Adafruit_SSD1306 pantalla(128,64,&Wire,-1);
 const char* ssid = "DIGIFIBRA-2133_EXT";
 const char* password = "A7TJXB3Q4A";
 WebServer server(80);
@@ -66,10 +66,7 @@ void setup() {
   pinMode(34,INPUT);
   pinMode(23,OUTPUT);
   // put your setup code here, to run once:
-  if(!display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
-    Serial.println(F("Fallo al iniciar SSD1306"));
-    for(;;); // Bucle infinito si hay error
-  }
+pantalla.begin(SSD1306_SWITCHCAPVCC, 0x3D); 
 termometro.begin();
 server.on("/",paginaPrincipal);
 server.on("/on",encenderRele);
@@ -78,6 +75,12 @@ server.begin();
 }
 void loop() {
   // put your main code here, to run repeatedly:
+pantalla.clearDisplay();
+pantalla.setTextSize(1);
+pantalla.setTextColor(WHITE);
+pantalla.setCursor(0,0);
+pantalla.print("Hola mundo");
+pantalla.display();
 temperatura=termometro.readTemperature();
 humedad=termometro.readHumidity();
 luminsoidad=map(analogRead(34),0,4095,0,100);
