@@ -65,6 +65,7 @@ void setup() {
   pinMode(33,INPUT);
   pinMode(34,INPUT);
   pinMode(23,OUTPUT);
+  pinMode(32,OUTPUT);
   // put your setup code here, to run once:
 pantalla.begin(SSD1306_SWITCHCAPVCC, 0x3D); 
 termometro.begin();
