@@ -6,7 +6,7 @@
 #include <WiFi.h>
 #include <WebServer.h>
 Adafruit_SSD1306 pantalla(128,64,&Wire,-1);
-const char* ssid = "DIGIFIBRA-2133_EXT";
+const char* ssid = "TU-WIFI";
 const char* password = "A7TJXB3Q4A";
 WebServer server(80);
 int temperatura;
