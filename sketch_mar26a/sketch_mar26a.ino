@@ -13,7 +13,7 @@ const char* wifi_nombre="Livebox6-BDBD";
 const char* contraseña="2P9KFhk6oGdc";
 const int pin_LED=19;
 DHT termometro(11,15);
-BLYNK_WRITE(V0){
+BLYNK_WRITE(A0){
   int valor=param.asInt();
   digitalWrite(pin_LED,valor);
 }
