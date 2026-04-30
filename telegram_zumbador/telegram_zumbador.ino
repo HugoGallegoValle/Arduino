@@ -4,8 +4,8 @@
 #include <WiFiClientSecure.h>
 const char* nombre_wifi = "DIGIFIBRA-2133";
 const char* contraseña = "A7TJXB3Q4A";
-const char* token = "8779274087:AAFsUdmRY06VRvewyfIMP3cckJngghY8nAA";
-const char* id = "8782494249";
+const char* token = "";
+const char* id = "";
 WiFiClientSecure client;
 UniversalTelegramBot bot(token, client);
 void setup() {
