@@ -2,25 +2,25 @@
 #include <UniversalTelegramBot.h>
 #include <WiFi.h>
 #include <WiFiClientSecure.h>
-const char* nombre_wifi = "DIGIFIBRA-2133";
-const char* contraseña = "A7TJXB3Q4A";
-const char* token = "";
-const char* id = "";
+const char* nombre_wifi = "Livebox6-BDBD";
+const char* contraseña = "2P9KFhk6oGdc";
+const char* token = "8779274087:AAFsUdmRY06VRvewyfIMP3cckJngghY8nAA";
+const char* id = "8782494249";
 WiFiClientSecure client;
 UniversalTelegramBot bot(token, client);
-bool movimiento;
+bool movimiento=false;
 int pin_pir=27;
-void funcion(bool movimiento) { 
-  return movimiento=true;
+void IRAM_ATTR funcion() { 
+  movimiento=true;
 }
 void setup() {
-  pinMode(pin_pir, OUTPUT);
-  attachInterrupt(digitalPinToInterrupt(pin_pir),funcion(bool movimiento), RISING);
+  pinMode(pin_pir, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(pin_pir),funcion, RISING);
   WiFi.mode(WIFI_STA);
   WiFi.begin(nombre_wifi, contraseña);
   Serial.begin(115200);
   client.setCACert(TELEGRAM_CERTIFICATE_ROOT);  // Certificado Raíz para api.telegram.org - Almacenado en la librería
-  while (WiFi.status() != WL_CONNECTED) {
+  while (WiFi.status() != WL_CONNECTED) { 
     Serial.print(".");
     delay(500);
   }
