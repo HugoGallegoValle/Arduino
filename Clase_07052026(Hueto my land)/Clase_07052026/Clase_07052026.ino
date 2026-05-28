@@ -19,7 +19,7 @@ int nivel;
 int seco = 3200;
 const char* nombre_wifi = "DIGIFIBRA-2133";
 const char* contraseña = "A7TJXB3Q4A";
-const char* token = "8779274087:AAFsUdmRY06VRvewyfIMP3cckJngghY8nAA";
+const char* token = "";
 const char* id = "8782494249";
 WiFiClientSecure client;
 UniversalTelegramBot bot(token, client);
@@ -144,6 +144,7 @@ void loop() {
         humedo = humedo + 500;
         Serial.println(humedad);
       }
+      //8779274087:AAFsUdmRY06VRvewyfIMP3cckJngghY8nAA
     }
     if(luz>100 && temperaturamaxima<25){
       if (temperatura>5){
