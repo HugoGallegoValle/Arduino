@@ -16,6 +16,8 @@ void IRAM_ATTR funcion() {
 void setup() {
   pinMode(pin_pir, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(pin_pir),funcion, RISING);
+  //⬆Sirve para parar el programa cunado se detecte un cambio en un pin digital y realizar una función
+  //Solo funciona con ESP32
   WiFi.mode(WIFI_STA);
   WiFi.begin(nombre_wifi, contraseña);
   Serial.begin(115200);
