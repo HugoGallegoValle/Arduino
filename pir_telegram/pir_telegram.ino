@@ -4,7 +4,7 @@
 #include <WiFiClientSecure.h>
 const char* nombre_wifi = "Livebox6-BDBD";
 const char* contraseña = "2P9KFhk6oGdc";
-const char* token = "8779274087:AAFsUdmRY06VRvewyfIMP3cckJngghY8nAA";
+const char* token = "";
 const char* id = "8782494249";
 WiFiClientSecure client;
 UniversalTelegramBot bot(token, client);
@@ -54,4 +54,5 @@ void loop() {
     bot.sendMessage(id, "Hay gente en tu casa", "");
   }
   movimiento=false;
+  //8779274087:AAFsUdmRY06VRvewyfIMP3cckJngghY8nAA
 }
