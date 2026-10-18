@@ -7,7 +7,8 @@
 
 // Inicializamos el módulo usando comunicación I2C
 Adafruit_PN532 nfc(PN532_IRQ, PN532_RESET);
-int sofia[11]={1,'B',' ','A',1,' ',2,2,' ',5,4};//1B A1 22 54
+int sofia[10]={107,152,66,85};//6B984255
+int longitud;
 void setup(void) {
   Serial.begin(115200);
   while (!Serial) delay(10);  // Esperar a que se abra el monitor serie
@@ -34,6 +35,7 @@ void setup(void) {
 }
 
 void loop(void) {
+  longitud=0;
   uint8_t success;
   uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };  // Buffer para guardar el ID único de la tarjeta
   uint8_t uidLength;                        // Longitud del ID (suele ser 4 o 7 bytes)
@@ -46,23 +48,19 @@ void loop(void) {
     Serial.print("Longitud del código (UID): ");
     Serial.print(uidLength);
     Serial.println(" bytes");
-
     Serial.print("Código de la tarjeta (HEX): ");
     for (uint8_t i = 0; i < uidLength; i++) {
       if (uid[i] < 0x10) Serial.print("0");
-      Serial.print(uid[i], HEX);
-      Serial.print(" ");
+      Serial.print(uid[i]);
+      longitud=longitud+1;
     }
-    Serial.println("");
-    
-    for(uint8_t i=0;i< uidLength;i++){
-      Serial.print(i);
-      //Serial.println(sofia[i]);
-      if(uid[i]!=sofia[i]){
-        i=uidLength;
+    for(int x=0;x<longitud+1;x++){
+      if(uid[x]!=sofia[x]){
+        Serial.println("Fuera");
+        break;
       }
       else{
-        if(i==uidLength){
+        if(x==longitud){
           Serial.println("Hola Sofía");
         }
       }

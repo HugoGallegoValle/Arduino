@@ -9,7 +9,7 @@ void setup(){
 }
 void loop(){
   if(IrReceiver.decode()){
-    data=IrReceiver.decodedIRData.decodedRawData,HEX;
+    data=IrReceiver.decodedIRData.command;
     Serial.println(data);
   }
   else{

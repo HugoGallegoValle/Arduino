@@ -1,5 +1,5 @@
 #include <IRremote.h>
-int pin=18;
+int pin=24;
 int mando=0;
 int valor_final=0;
 const int vel_motor1 = 26;
@@ -16,7 +16,7 @@ pinMode(pin2_motor1, OUTPUT);
 pinMode(pin1_motor2, OUTPUT);
 pinMode(pin2_motor2, OUTPUT);
 pinMode(vel_motor2, OUTPUT);
-Serial.begin(115200);
+Serial.begin(9600);
 IrReceiver.begin(pin);
 }
 
