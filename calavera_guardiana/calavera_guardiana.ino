@@ -89,6 +89,8 @@ else{
   susto();
 }
 if(tiempo_referenciaNFC<=tiempo_actual){
+  Serial.println("Comprobar tarjeta");
+  tiempo_referenciaNFC=millis()+100;
   verificar_tarjeta=true;
   uint8_t success;
   uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };  // Buffer para guardar el ID único de la tarjeta
