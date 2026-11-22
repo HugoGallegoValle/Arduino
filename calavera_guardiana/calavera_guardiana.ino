@@ -18,6 +18,7 @@ const int posiciones_servo[]={90,180,90,0};
 const int pin1_tarjeta[]={27,161,34,84};//{9,30,15,149};
 unsigned long tiempo_referenciaZ;
 unsigned long tiempo_referenciaS;
+unsigned long tiempo_referenciaNFC;
 unsigned long tiempo_actual;
 bool estado_servo=true;
 bool estado_zumbador=true;
@@ -43,9 +44,9 @@ Serial.print("¡Módulo encontrado! Chip PN5");
 nfc.SAMConfig();
 tiempo_referenciaS=millis()+3000;
 tiempo_referenciaZ=millis()+180;
-
-digitalWrite(rgb_rojo,LOW);
+tiempo_referenciaNFC=millis()+100;
 digitalWrite(rgb_verde,HIGH);
+digitalWrite(rgb_rojo,LOW);
 }
 void susto(){
 if(tiempo_referenciaS<=tiempo_actual && !estado_servo){
@@ -73,37 +74,45 @@ void loop() {
   // put your main code here, to run repeatedly:
 tiempo_actual=millis();
 if(estado_servo && estado_zumbador){
-  if(digitalRead(pir)!=HIGH){ //==
+  if(digitalRead(pir)==HIGH){ 
     estado_servo=false;
     estado_zumbador=false;
+    digitalWrite(rgb_verde,LOW);
+    digitalWrite(rgb_rojo,HIGH);
   }else{
     noTone(zumbador);
+    digitalWrite(rgb_rojo,LOW);
+    digitalWrite(rgb_verde,HIGH);
 }
 }
 else{
   susto();
 }
-verificar_tarjeta=true;
-uint8_t success;
-uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };  // Buffer para guardar el ID único de la tarjeta
-uint8_t uidLength;                        // Longitud del ID (suele ser 4 o 7 bytes)  
-success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength,50);
-if(success){
-  Serial.println(uidLength);
-  for(int i=0;i<uidLength;i++){
-    Serial.println(uid[i]);
-    if(uid[i]!=pin1_tarjeta[i]){
-      Serial.println("Mal");
-      verificar_tarjeta=false;
+if(tiempo_referenciaNFC<=tiempo_actual){
+  verificar_tarjeta=true;
+  uint8_t success;
+  uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 };  // Buffer para guardar el ID único de la tarjeta
+  uint8_t uidLength;                        // Longitud del ID (suele ser 4 o 7 bytes)  
+  success = nfc.readPassiveTargetID(PN532_MIFARE_ISO14443A, uid, &uidLength,50);
+  if(success){
+    Serial.println(uidLength);
+    for(int i=0;i<uidLength;i++){
+      Serial.println(uid[i]);
+      if(uid[i]!=pin1_tarjeta[i]){
+        Serial.println("Mal");
+        verificar_tarjeta=false;
+      }
     }
-  }
-  if(verificar_tarjeta){
-    digitalWrite(rgb_rojo,HIGH);
-    digitalWrite(rgb_verde,LOW);
-    Serial.println("ROJO");
-    delay(15000);
-    digitalWrite(rgb_rojo,LOW);
-    digitalWrite(rgb_verde,HIGH);
+    if(verificar_tarjeta){
+      digitalWrite(rgb_verde,LOW);
+      digitalWrite(rgb_rojo,HIGH);
+      Serial.println("ROJO");
+      delay(15000);
+      Serial.println("Fuera del delay");
+      digitalWrite(rgb_verde,HIGH);
+      digitalWrite(rgb_rojo,LOW);
+      delay(1000);
+    }
   }
 }
 }
